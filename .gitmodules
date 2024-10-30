@@ -1,0 +1,3 @@
+[submodule "client/studio_offline/minhook"]
+	path = client/studio_offline/minhook
+	url = https://github.com/TsudaKageyu/minhook.git

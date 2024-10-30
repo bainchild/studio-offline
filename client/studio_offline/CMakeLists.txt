@@ -23,6 +23,8 @@ set(ALL_FILES
     ${Source_Files}
 )
 
+add_subdirectory(minhook)
+
 ################################################################################
 # Target
 ################################################################################
@@ -46,7 +48,7 @@ endif()
 # Include directories
 ################################################################################
 target_include_directories(${PROJECT_NAME} PUBLIC
-    "${CMAKE_CURRENT_SOURCE_DIR}/minhook"
+    "${CMAKE_CURRENT_SOURCE_DIR}/minhook/include"
     "${CMAKE_CURRENT_SOURCE_DIR}/chris_stuff"
 )
 
@@ -101,7 +103,7 @@ endif()
 ################################################################################
 if(CMAKE_VS_PLATFORM_NAME STREQUAL "x64")
     set(ADDITIONAL_LIBRARY_DEPENDENCIES
-        "../depend_libs/minhook/libminhook"
+        minhook
     )
 endif()
 target_link_libraries(${PROJECT_NAME} PUBLIC "${ADDITIONAL_LIBRARY_DEPENDENCIES}")

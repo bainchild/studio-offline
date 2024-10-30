@@ -1,16 +1,16 @@
 #include <Windows.h>
 #include <cstdio>
 #include <cstdint>
-#include <widemath.h>
+// #include "widemath.h"
 #include "MinHook.h"
 
 #include "chris_stuff/scanner.hpp"
 #include "chris_stuff/patterns.hpp"
 #include <iostream>
-#include <__msvc_int128.hpp>
+// #include <__msvc_int128.hpp>
 #include <filesystem>
-
-
+#define uint128_t unsigned __int128
+#define uintptr_t uint64_t
 
 typedef void (__fastcall* fromcomponents_t)(uint128_t* res, uintptr_t schema, uintptr_t host, uintptr_t path, uintptr_t query, uintptr_t fragment);
 typedef uint64_t* (__fastcall* trustcheck_t)(const char* Str1, char a2, char a3);
@@ -74,16 +74,16 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
                 printf("HttpRequest_notTrusted: 0x%p\n", *httprequest_addr);
                 abcd = (fromcomponents_t)*addr;
 
-                MH_CreateHook(abcd, hook_test, reinterpret_cast<LPVOID*>(&original));
-                MH_EnableHook(abcd);
+                MH_CreateHook((LPVOID)abcd, (LPVOID)hook_test, reinterpret_cast<LPVOID*>(&original));
+                MH_EnableHook((LPVOID)abcd);
 
                 trustMeBuddy = (trustcheck_t)*trustcheck_addr;
-                MH_CreateHook(trustMeBuddy, trustcheck_hook, reinterpret_cast<LPVOID*>(&og_tc));
-                MH_EnableHook(trustMeBuddy);
+                MH_CreateHook((LPVOID)trustMeBuddy, (LPVOID)trustcheck_hook, reinterpret_cast<LPVOID*>(&og_tc));
+                MH_EnableHook((LPVOID)trustMeBuddy);
 
                 hookedVer = (httprequest_nottrusted)*httprequest_addr;
-                MH_CreateHook(hookedVer, nottrusted_hook, reinterpret_cast<LPVOID*>(&originalHttpNT));
-                MH_EnableHook(hookedVer);
+                MH_CreateHook((LPVOID)hookedVer, (LPVOID)nottrusted_hook, reinterpret_cast<LPVOID*>(&originalHttpNT));
+                MH_EnableHook((LPVOID)hookedVer);
             }
         }
 
